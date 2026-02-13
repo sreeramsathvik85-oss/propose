@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Kichulu ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', sans-serif;
+        overflow: hidden;
+    }
+
+    .container {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        max-width: 90%;
+        position: relative;
+        z-index: 5;
+    }
+
+    h1 {
+        color: #ff4b6e;
+        font-size: 28px;
+    }
+
+    p {
+        font-size: 18px;
+        margin: 20px 0;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    button {
+        padding: 12px 26px;
+        font-size: 18px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+        background: #ff4b6e;
+        color: white;
+        font-weight: bold;
+    }
+
+    #noBtn {
+        background: #ddd;
+        color: black;
+    }
+
+    /* Popup */
+    .popup {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+
+    .popup-content {
+        background: white;
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        animation: pop 0.4s ease;
+        max-width: 90%;
+    }
+
+    .popup-content img {
+        max-width: 280px;
+        height: auto;
+        border-radius: 15px;
+        margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    @keyframes pop {
+        from { transform: scale(0.5); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Hearts */
+    .heart {
+        position: fixed;
+        bottom: -20px;
+        font-size: 20px;
+        animation: floatUp 5s linear forwards;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes floatUp {
+        to {
+            transform: translateY(-110vh);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Hey Keerthi ❤️</h1>
+    <p>
+        From the moment you became my <b>Kichulu</b>,  
+        my world felt complete 🥰  
+        <br><br>
+        Will you be mine forever?
+    </p>
+
+    <div class="btn-group">
+        <button id="yesBtn">YES 💖</button>
+        <button id="noBtn">NO 😝</button>
+    </div>
+</div>
+
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h2>She said YES 😭💍</h2>
+        <p>I love you, my Kichulu 💖</p>
+        
+        <img src="cute-cat-couple.gif" alt="Us">
+        
+    </div>
+</div>
+
+<audio id="loveSong" src="love-song.mp3" loop></audio>
+
+<script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const popup = document.getElementById("popup");
+    const song = document.getElementById("loveSong");
+
+    // The texts that appear when she clicks NO
+    const phrases = [
+        "NO 😝",
+        "Are you sure?",
+        "Really sure?",
+        "Think again!",
+        "Kichulu please 🥺",
+        "Don't do this to me",
+        "I'm gonna cry...",
+        "You are breaking my heart 💔",
+        "I'm gonna tell your mom!",
+        "Please baby?",
+        "Pretty please?",
+        "Don't be so cold 🥶",
+        "I'll give you chocolate?",
+        "I'll give you a massage?",
+        "Fine, I'll ask the neighbor's cat...",
+        "Just kidding, say YES! ❤️"
+    ];
+
+    let noCount = 0;
+
+    // NO Button Click Event
+    noBtn.addEventListener("click", () => {
+        noCount++;
+        
+        // Change text on NO button (loops back to start if it runs out, or stays on last one)
+        // Currently set to loop:
+        noBtn.innerText = phrases[noCount % phrases.length];
+
+        // Make YES button BIGGER every time NO is clicked
+        const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+        const newSize = currentSize * 1.4; // Grows by 40% each time
+        yesBtn.style.fontSize = `${newSize}px`;
+    });
+
+    // YES click
+    yesBtn.addEventListener("click", () => {
+        popup.style.display = "flex";
+        fadeInMusic();
+        startHearts();
+    });
+
+    // Fade-in music
+    function fadeInMusic() {
+        song.volume = 0;
+        song.play().catch(error => console.log("Audio play failed (browser policy):", error));
+        let vol = 0;
+        const fade = setInterval(() => {
+            if (vol < 1) {
+                vol += 0.05;
+                song.volume = vol;
+            } else {
+                clearInterval(fade);
+            }
+        }, 200);
+    }
+
+    // Floating hearts
+    function startHearts() {
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 5000);
+        }, 300);
+    }
+</script>
+
+</body>
+</html>
